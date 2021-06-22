@@ -1,5 +1,5 @@
 import random
-
+import math
 
 def printGameboard(gameboard):
 	print()
@@ -19,7 +19,8 @@ def cpuBestMove(gameboard):
 		if gameboard[i] == ' ':
 			available.append(i)
 	
-	gameboard[randChoice] = 'X'
+	num = 0
+	gameboard[num] = 'X'
 
 def minimax():
 	return 

@@ -56,16 +56,16 @@ def endingText():
 
 def decideWinner(gameboard, turn):
 	if turn[1]: # Player's turn
-		if all(i != ' ' for i in gameboard.values()):
-			print('\nYou tie!')
-		else:
+		if any(i == ' ' for i in gameboard.values()):
 			print('\nAwww! You lost!')
+		else:
+			print('\nYou tie!')
 		endingText()
 	elif turn[0]: # Computer's turn
-		if all(i != ' ' for i in gameboard.values()):
-			print('\nYou tie!')
-		else:
+		if any(i == ' ' for i in gameboard.values()):
 			print('\nCongratulations! You won!')
+		else:
+			print('\nYou tie!')
 		endingText()
 
 
