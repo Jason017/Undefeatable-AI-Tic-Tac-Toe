@@ -10,6 +10,17 @@ def printGameboard(gameboard):
 	print(' ' + gameboard[7] + ' | ' + gameboard[8] + ' | ' + gameboard[9] + ' ')
 	print()
 
+def cpuRandomMove(gameboard):
+	print('\nComputer\'s move: ')
+	available = []
+
+	for i in range(1, 10):
+		if gameboard[i] == ' ':
+			available.append(i)
+	
+	randChoice = random.choice(available)
+	gameboard[randChoice] = 'X'
+	printGameboard(gameboard)
 
 def cpuBestMove(gameboard):
 	print('\nComputer\'s move: ')
@@ -58,22 +69,21 @@ def endingText():
 
 def decideWinner(gameboard, turn):
 	if turn[1]: # Player's turn
-		if all(i != ' ' for i in gameboard.values()):
-			print('\nYou tie!')
-		else:
+		if any(i == ' ' for i in gameboard.values()):
 			print('\nAwww! You lost!')
+		else:
+			print('\nYou tie!')
 		endingText()
 	elif turn[0]: # Computer's turn
-		if all(i != ' ' for i in gameboard.values()):
-			print('\nYou tie!')
-		else:
+		if any(i == ' ' for i in gameboard.values()):
 			print('\nCongratulations! You won!')
+		else:
+			print('\nYou tie!')
 		endingText()
-
 
 def updateGame(gameboard, turn):
 	if turn[0]:
-		cpuRandomMove(gameboard)
+		cpuBestMove(gameboard)
 		printGameboard(gameboard)
 		return [0, 1]
 	elif turn[1]:

@@ -1,6 +1,5 @@
 import random
 
-
 def printGameboard(gameboard):
 	print(' ' + gameboard[1] + ' | ' + gameboard[2] + ' | ' + gameboard[3] + ' ')
 	print('---+---+---')
