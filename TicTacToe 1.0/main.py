@@ -15,7 +15,7 @@ def cpuRandomMove(gameboard):
 	available = []
 
 	for i in range(1, 10):
-		if board[i] == ' ':
+		if gameboard[i] == ' ':
 			available.append(i)
 	
 	randChoice = random.choice(available)
@@ -54,24 +54,14 @@ def endingText():
 	print('--------------------\n')
 
 
-def decideFirstMove():
-	rand = random.randint(0,1)
-	if rand:
-		print('The computer moves first.')
-		cpuTurn = True
-	else:
-		print('The player moves first.')
-		playerTurn = True
-
-
-def decideWinner(gameboard, cpuTurn, playerTurn):
-	if playerTurn:
+def decideWinner(gameboard, turn):
+	if turn[1]: # Player's turn
 		if all(i != ' ' for i in gameboard.values()):
 			print('\nYou tie!')
 		else:
 			print('\nAwww! You lost!')
 		endingText()
-	elif cpuTurn:
+	elif turn[0]: # Computer's turn
 		if all(i != ' ' for i in gameboard.values()):
 			print('\nYou tie!')
 		else:
@@ -79,31 +69,39 @@ def decideWinner(gameboard, cpuTurn, playerTurn):
 		endingText()
 
 
-def updateGame(gameboard, cpuTurn, playerTurn):
-	if cpuTurn:
+def updateGame(gameboard, turn):
+	if turn[0]:
 		cpuRandomMove(gameboard)
-		cpuTurn = False
-		playerTurn = True
-	elif playerTurn:
+		return [0, 1]
+	elif turn[1]:
 		playerMove(gameboard)
-		cpuTurn = True
-		playerTurn = False
+		printGameboard(gameboard)
+		return [1, 0]
 
 
 def main():
 	cpuTurn = False
 	playerTurn = False
+	turn = [cpuTurn, playerTurn]
+
 	board = {
 		1: ' ', 2: ' ', 3: ' ', 
 		4: ' ', 5: ' ', 6: ' ', 
 		7: ' ', 8: ' ', 9: ' ', 
 	}
-	decideFirstMove()
+	
+	rand = random.randint(0,1)
+	if rand:
+		print('The computer moves first.')
+		turn[0] = True
+	else:
+		print('The player moves first.')
+		turn[1] = True
 	printGameboard(board)
 
 	while not isGameOver(board):
-		updateGame(board, cpuTurn, playerTurn)
-	decideWinner(board, cpuTurn, playerTurn)
+		turn = updateGame(board, turn)
+	decideWinner(board, turn)
 
 if __name__ == "__main__":
 	main()
