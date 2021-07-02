@@ -1,12 +1,12 @@
 import random
-import math
 
 playerTurn = False
 cpuTurn = False
+availablePlaces = list(range(1,10))
 board = {
-	7: ' ', 8: ' ', 9: ' ', 
-	4: ' ', 5: ' ', 6: ' ', 
 	1: ' ', 2: ' ', 3: ' ', 
+	4: ' ', 5: ' ', 6: ' ', 
+	7: ' ', 8: ' ', 9: ' ', 
 }
 
 def printGameboard(gameboard):
@@ -18,40 +18,22 @@ def printGameboard(gameboard):
 	print(' ' + gameboard[7] + ' | ' + gameboard[8] + ' | ' + gameboard[9] + ' ')
 	print()
 
+
 def cpuRandomMove(gameboard):
 	print('\nComputer\'s move: ')
-	available = []
+	global availablePlaces
 
-	for i in range(1, 10):
-		if gameboard[i] == ' ':
-			available.append(i)
-	
-	randChoice = random.choice(available)
-	gameboard[randChoice] = 'X'
-	printGameboard(gameboard)
+	randNum = random.choice(availablePlaces)
+	gameboard[randNum] = 'X'
+	availablePlaces.remove(randNum)
 
 
-def playerMove(gameboard):
+def playerMove(gameboard, moveNum):
+	global availablePlaces
+
 	print('It\'s your turn now! Which place would you like to move to?')
-	moveNum = int(input())
-
-	if gameboard[moveNum] != ' ':
-		print('The place is already filled.')
-	else:
-		gameboard[moveNum] = 'O'
-
-
-def isGameOver(gameboard):
-	# Loop through rows, columns, and diagonals to check if there 
-	# are 3 identical pieces on a line. If so, game is over.
-	# 
-	# Game is also over if all pieces are filled.
-
-	if (gameboard[1] == gameboard[2] == gameboard[3] != ' ' or gameboard[4] == gameboard[5] == gameboard[6] != ' ' or gameboard[7] == gameboard[8] == gameboard[9] != ' ' or
-	gameboard[1] == gameboard[4] == gameboard[7] != ' ' or gameboard[2] == gameboard[5] == gameboard[8] != ' ' or gameboard[3] == gameboard[6] == gameboard[9] != ' ' or
-	gameboard[1] == gameboard[5] == gameboard[9] != ' ' or gameboard[3] == gameboard[5] == gameboard[7] != ' ' or all(i != ' ' for i in gameboard.values())):
-		return True
-	return False
+	gameboard[moveNum] = 'O'
+	availablePlaces.remove(moveNum)
 
 
 def endingText():
@@ -62,44 +44,63 @@ def endingText():
 	print('--------------------\n')
 
 
-def decideWinner(gameboard):
+def isGameOver(gameboard):
+	# Game is also over if all places are filled or the winBoard is matched
+	# by 3 rows, 3 columns, or 2 diagonals
+	global availablePlaces
 	global playerTurn
 	global cpuTurn
 
-	if playerTurn:
-		if any(i == ' ' for i in gameboard.values()):
-			print('\nAwww! You lost!')
-		else:
-			print('\nYou tie!')
-		endingText()
-	elif cpuTurn:
-		if any(i == ' ' for i in gameboard.values()):
-			print('\nCongratulations! You won!')
-		else:
-			print('\nYou tie!')
-		endingText()
+	winBoard = [
+		[1, 2, 3],
+		[4, 5, 6],
+		[7, 8, 9],
+		[1, 4, 7],
+		[2, 5, 8],
+		[3, 6, 9],
+		[3, 5, 7],
+		[1, 5, 9]
+	]
+
+	for w in winBoard:
+		if gameboard[w[0]] == gameboard[w[1]] == gameboard[w[2]] != ' ':
+			if playerTurn:
+				print('\nAwww! You lost!')
+				return True
+			elif cpuTurn:
+				print('\nCongratulations! You won!')
+				return True
+	if availablePlaces == []:
+		print('\nYou tie!')
+		return True
+	return False
+
 
 def updateGame(gameboard):
 	global playerTurn
 	global cpuTurn
 
 	if cpuTurn:
-		cpuBestMove(gameboard)
+		cpuRandomMove(gameboard)
 		printGameboard(gameboard)
 		playerTurn = True
 		cpuTurn = False
 	elif playerTurn:
-		playerMove(gameboard)
-		printGameboard(gameboard)
-		playerTurn = False
-		cpuTurn = True
+		moveNum = int(input())
+		if moveNum not in availablePlaces:
+			print('The place you choose to move is not available.')
+		else:
+			playerMove(gameboard, moveNum)
+			printGameboard(gameboard)
+			playerTurn = False
+			cpuTurn = True
 
 
 def main():
-	global cpuTurn
 	global playerTurn
+	global cpuTurn
 	global board
-
+	
 	rand = random.randint(0,1)
 
 	if rand:
@@ -112,7 +113,7 @@ def main():
 
 	while not isGameOver(board):
 		updateGame(board)
-	decideWinner(board)
+	endingText()
 
 if __name__ == "__main__":
 	main()
