@@ -36,14 +36,6 @@ def playerMove(gameboard, moveNum):
 	availablePlaces.remove(moveNum)
 
 
-def endingText():
-	print('\n--------------------')
-	print('|    Game Over!    |')
-	print('|                  |')
-	print('| Thx for Playing! |')
-	print('--------------------\n')
-
-
 def isGameOver(gameboard):
 	# Game is also over if all places are filled or the winBoard is matched
 	# by 3 rows, 3 columns, or 2 diagonals
@@ -94,6 +86,14 @@ def updateGame(gameboard):
 			printGameboard(gameboard)
 			playerTurn = False
 			cpuTurn = True
+
+
+def endingText():
+	print('\n--------------------')
+	print('|    Game Over!    |')
+	print('|                  |')
+	print('| Thx for Playing! |')
+	print('--------------------\n')
 
 
 def main():
