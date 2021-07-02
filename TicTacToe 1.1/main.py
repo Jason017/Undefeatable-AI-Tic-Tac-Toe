@@ -20,8 +20,8 @@ def printGameboard(gameboard):
 
 
 def cpuRandomMove(gameboard):
-	print('\nComputer\'s move: ')
 	global availablePlaces
+	print('\nComputer\'s move: ')
 
 	randNum = random.choice(availablePlaces)
 	gameboard[randNum] = 'X'
@@ -30,8 +30,8 @@ def cpuRandomMove(gameboard):
 
 def playerMove(gameboard, moveNum):
 	global availablePlaces
-
 	print('It\'s your turn now! Which place would you like to move to?')
+	
 	gameboard[moveNum] = 'O'
 	availablePlaces.remove(moveNum)
 
