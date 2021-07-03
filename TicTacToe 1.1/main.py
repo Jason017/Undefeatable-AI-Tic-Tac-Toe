@@ -37,27 +37,21 @@ def playerMove(gameboard, moveNum):
 
 
 def isGameOver():
-	# Game is also over if all places are filled or the winBoard is matched
+	# Game is over if all places are filled or the winBoard is matched
 	# by 3 rows, 3 columns, or 2 diagonals
 	winBoard = [
-		[1, 2, 3],
-		[4, 5, 6],
-		[7, 8, 9],
-		[1, 4, 7],
-		[2, 5, 8],
-		[3, 6, 9],
-		[3, 5, 7],
-		[1, 5, 9]
+		[1, 2, 3], [4, 5, 6], [7, 8, 9],
+		[1, 4, 7], [2, 5, 8], [3, 6, 9],
+		[3, 5, 7], [1, 5, 9]
 	]
 
 	for w in winBoard:
 		if board[w[0]] == board[w[1]] == board[w[2]] != ' ':
 			if playerTurn:
 				print('\nAwww! You lost!')
-				return True
 			elif cpuTurn:
 				print('\nCongratulations! You won!')
-				return True
+			return True
 	if availablePlaces == []:
 		print('\nYou tie!')
 		return True
