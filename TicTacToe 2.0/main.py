@@ -1,12 +1,12 @@
 import random
 
-whoseTurn = 0 # Player's turn: 1,   AI's turn: -1 
-MAX = 1
-MIN = -1
+whoseTurn = 0 # AI's turn: 1 ,  Player's turn: -1
+AI = 1
+PLAYER = -1
 board = {
 	1: ' ', 2: ' ', 3: ' ', 
 	4: ' ', 5: ' ', 6: ' ', 
-	7: ' ', 8: ' ', 9: ' ', 
+	7: ' ', 8: ' ', 9: ' '
 }
 
 def printGameboard():
@@ -31,29 +31,31 @@ def playerMove(moveNum):
 	global board
 	print('It\'s your turn now! Which place would you like to move to?')
 	board[moveNum] = 'O'
+	printGameboard()
 
 
 def AIBestMove():
 	global board
 	gameboard = board.copy()
 	depth = len(getAvailable(gameboard))
-	print('\nComputer\'s move: ')
+	print('\nAI\'s move: ')
 
 	if depth == 9:
 		moveNum = random.randrange(1,10)
 	else:
-		bestMove = minimax(gameboard, depth, -1)
+		bestMove = minimax(gameboard, depth, AI)
 		moveNum = bestMove[0]
 	board[moveNum] = 'X'
+	printGameboard()
 
 
 def minimax(gameboard, depth, turn):
-	if turn == 1:
-		bestMove = [-1, float('-inf')]
-		move = 'O'
-	else:
-		bestMove = [-1, float('inf')]
+	if turn == AI:
+		bestMove = [-1, float('-inf')] # Get maximum value for AI
 		move = 'X'
+	elif turn == PLAYER:
+		bestMove = [-1, float('inf')] # Get minimum value for the player
+		move = 'O'
 
 	if depth == 0 or isGameOver(gameboard):
 		return [-1, getScore(gameboard)]
@@ -62,12 +64,12 @@ def minimax(gameboard, depth, turn):
 		gameboard[i] = move
 		moveScore = minimax(gameboard, depth, -turn)
 		gameboard[i] = ' '
-		bestMove[0] = i
+		moveScore[0] = i
 
-		if turn == 1:
+		if turn == AI:
 			if moveScore[1] > bestMove[1]:
 				bestMove = moveScore # Get maximum value
-		else:
+		elif turn == PLAYER:
 			if moveScore[1] < bestMove[1]:
 				bestMove = moveScore # Get minimum value
 	return bestMove
@@ -84,9 +86,9 @@ def getScore(gameboard):
 
 	for w in winBoard:
 		if gameboard[w[0]] == gameboard[w[1]] == gameboard[w[2]] != ' ':
-			if whoseTurn: # AI won
+			if whoseTurn == AI: # Player won
 				return -1
-			elif whoseTurn == -1: # Player won
+			elif whoseTurn == PLAYER: # AI won
 				return 1
 	if getAvailable(gameboard) == []:
 		return 0
@@ -95,12 +97,6 @@ def getScore(gameboard):
 def isGameOver(gameboard):
 	if getScore(gameboard) == None:
 		return False
-	elif getScore(gameboard) == -1:
-		print('\nAwww! You lost!')
-	elif getScore(gameboard) == 1:
-		print('\nCongratulations! You won!')
-	elif getScore(gameboard) == 0:
-		print('\nYou tie!')
 	return True
 
 
@@ -108,23 +104,27 @@ def updateGame():
 	global whoseTurn
 	
 	# AI's turn
-	if whoseTurn == -1: 
+	if whoseTurn == AI:
 		AIBestMove()
-		whoseTurn = 1
-		printGameboard()
-	
+		whoseTurn = PLAYER
 	# Player's turn
-	elif whoseTurn:
+	elif whoseTurn == PLAYER:
 		moveNum = int(input())
 		if moveNum not in getAvailable(board):
 			print('The place you choose to move is not available.')
 		else:
 			playerMove(moveNum)
-			whoseTurn = -1
-			printGameboard()
+			whoseTurn = AI
 
 
 def endingText():
+	if getScore(board) == 1:
+		print('\nAwww! You lost!')
+	elif getScore(board) == -1:
+		print('\nCongratulations! You won!')
+	elif getScore(board) == 0:
+		print('\nYou tie!')
+		
 	print('\n--------------------')
 	print('|    Game Over!    |')
 	print('|                  |')
@@ -135,13 +135,12 @@ def endingText():
 def main():
 	global whoseTurn
 	
-	rand = random.randint(0,1)
-	if rand:
-		print('The computer moves first.')
-		whoseTurn = -1
+	if random.randrange(2):
+		print('AI moves first.')
+		whoseTurn = AI
 	else:
-		print('The player moves first.')
-		whoseTurn = 1
+		print('Player moves first.')
+		whoseTurn = PLAYER
 	printGameboard()
 
 	while not isGameOver(board):
