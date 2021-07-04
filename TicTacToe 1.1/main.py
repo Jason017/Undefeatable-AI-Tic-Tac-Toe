@@ -88,10 +88,8 @@ def endingText():
 def main():
 	global playerTurn
 	global cpuTurn
-	
-	rand = random.randint(0,1)
 
-	if rand:
+	if random.randrange(2):
 		print('The computer moves first.')
 		cpuTurn = True
 	else:
