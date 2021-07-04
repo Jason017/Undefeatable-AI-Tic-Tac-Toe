@@ -1,4 +1,5 @@
 import random
+from math import inf as infinity
 
 whoseTurn = 0 # AI's turn: 1 ,  Player's turn: -1
 AI = 1
@@ -20,11 +21,7 @@ def printGameboard():
 
 
 def getAvailable(gameboard):
-	availablePlaces = []
-	for key, value in gameboard.items():
-		if value == ' ':
-			availablePlaces.append(key)
-	return availablePlaces
+	return [key for key, val in gameboard.items() if val == " "]
 
 
 def playerMove():
@@ -67,12 +64,11 @@ def AIBestMove():
 
 def minimax(gameboard, depth, turn):
 	if turn == AI:
-		bestMove = [-1, float('-inf')] # Get maximum value for AI
+		bestMove = [-1, -infinity] # Get maximum value for AI
 		move = 'X'
 	else:
-		bestMove = [-1, float('inf')] # Get minimum value for players
+		bestMove = [-1, infinity] # Get minimum value for players
 		move = 'O'
-
 	if depth == 0 or isGameOver(gameboard):
 		return [-1, getScore(gameboard)]
 
@@ -90,7 +86,6 @@ def minimax(gameboard, depth, turn):
 				bestMove = moveScore
 	return bestMove
 
-
 def getScore(gameboard):
 	# Game is over if all places are filled or the winBoard is matched
 	# by 3 rows, 3 columns, or 2 diagonals
@@ -102,9 +97,9 @@ def getScore(gameboard):
 
 	for w in winBoard:
 		if gameboard[w[0]] == gameboard[w[1]] == gameboard[w[2]] != ' ':
-			if whoseTurn == AI: # Player won
+			if gameboard[w[0]] == 'O': # Player won
 				return -1
-			elif whoseTurn == PLAYER: # AI won
+			else: # AI won
 				return 1
 	if getAvailable(gameboard) == []:
 		return 0
