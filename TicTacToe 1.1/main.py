@@ -31,7 +31,7 @@ def playerMove(gameboard, moveNum):
 	global availablePlaces
 	print('It\'s your turn now! Which place would you like to move to?')
 	gameboard[moveNum] = 'O'
-	availablePlaces.remove(moveNum)
+	availablePlaces.remove(moveNum) 
 
 
 def isGameOver():
