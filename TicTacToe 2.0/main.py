@@ -32,11 +32,8 @@ def playerMove():
 	
 	moveNum = int(input())
 	while moveNum not in getAvailable(board):
-		try:
-			print('The place you choose to move is not available.')
-			moveNum = int(input())
-		except (KeyError, ValueError):
-			print('Try again')
+		print('The place you choose to move is not available.')
+		moveNum = int(input())
 	
 	board[moveNum] = 'O'
 	whoseTurn = AI
@@ -96,11 +93,10 @@ def getScore(gameboard):
 	]
 
 	for w in winBoard:
-		if gameboard[w[0]] == gameboard[w[1]] == gameboard[w[2]] != ' ':
-			if gameboard[w[0]] == 'O': # Player won
-				return -1
-			else: # AI won
-				return 1
+		if gameboard[w[0]] == gameboard[w[1]] == gameboard[w[2]] == 'O':
+			return -1
+		elif gameboard[w[0]] == gameboard[w[1]] == gameboard[w[2]] == 'X':
+			return 1
 	if getAvailable(gameboard) == []:
 		return 0
 
