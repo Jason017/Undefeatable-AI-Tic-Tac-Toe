@@ -27,18 +27,33 @@ def getAvailable(gameboard):
 	return availablePlaces
 
 
-def playerMove(moveNum):
+def playerMove():
 	global board
+	global whoseTurn
+
 	print('It\'s your turn now! Which place would you like to move to?')
+	
+	moveNum = int(input())
+	while moveNum not in getAvailable(board):
+		try:
+			print('The place you choose to move is not available.')
+			moveNum = int(input())
+		except (KeyError, ValueError):
+			print('Try again')
+	
 	board[moveNum] = 'O'
+	whoseTurn = AI
 	printGameboard()
 
 
 def AIBestMove():
 	global board
+	global whoseTurn
+	
+	print('\nAI\'s move: ')
+
 	gameboard = board.copy()
 	depth = len(getAvailable(gameboard))
-	print('\nAI\'s move: ')
 
 	if depth == 9:
 		moveNum = random.randrange(1,10)
@@ -46,6 +61,7 @@ def AIBestMove():
 		bestMove = minimax(gameboard, depth, AI)
 		moveNum = bestMove[0]
 	board[moveNum] = 'X'
+	whoseTurn = PLAYER
 	printGameboard()
 
 
@@ -53,8 +69,8 @@ def minimax(gameboard, depth, turn):
 	if turn == AI:
 		bestMove = [-1, float('-inf')] # Get maximum value for AI
 		move = 'X'
-	elif turn == PLAYER:
-		bestMove = [-1, float('inf')] # Get minimum value for the player
+	else:
+		bestMove = [-1, float('inf')] # Get minimum value for players
 		move = 'O'
 
 	if depth == 0 or isGameOver(gameboard):
@@ -62,16 +78,16 @@ def minimax(gameboard, depth, turn):
 
 	for i in getAvailable(gameboard):
 		gameboard[i] = move
-		moveScore = minimax(gameboard, depth, -turn)
+		moveScore = minimax(gameboard, depth - 1, -turn)
 		gameboard[i] = ' '
 		moveScore[0] = i
 
 		if turn == AI:
 			if moveScore[1] > bestMove[1]:
-				bestMove = moveScore # Get maximum value
-		elif turn == PLAYER:
+				bestMove = moveScore
+		else:
 			if moveScore[1] < bestMove[1]:
-				bestMove = moveScore # Get minimum value
+				bestMove = moveScore
 	return bestMove
 
 
@@ -101,20 +117,10 @@ def isGameOver(gameboard):
 
 
 def updateGame():
-	global whoseTurn
-	
-	# AI's turn
 	if whoseTurn == AI:
 		AIBestMove()
-		whoseTurn = PLAYER
-	# Player's turn
 	elif whoseTurn == PLAYER:
-		moveNum = int(input())
-		if moveNum not in getAvailable(board):
-			print('The place you choose to move is not available.')
-		else:
-			playerMove(moveNum)
-			whoseTurn = AI
+		playerMove()
 
 
 def endingText():
