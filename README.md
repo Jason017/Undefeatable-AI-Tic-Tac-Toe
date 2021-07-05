@@ -2,7 +2,7 @@
 A preliminary python program playing Tic Tac Toe with the computer taking random moves.
 
 # Tic Tac Toe 1.1
-Making some slight changes to simplify the function and makes it easier to read.
+Commited some slight changes to simplify the function and made it easier to read.
 
 ```Python
 board = {
@@ -12,7 +12,7 @@ board = {
 }
 ```
 
-- Using a dictionary to store a gameboard and count the winning format.
+- Using a dictionary to store the data of the gameboard and count the winning format.
 - Global variable `playerTurn` and `cpuTurn` to determine who's playing and who's winning the game eventually.
 
 # Tic Tac Toe 2.0
