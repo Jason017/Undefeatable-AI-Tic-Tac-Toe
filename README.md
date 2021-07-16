@@ -16,7 +16,9 @@ board = {
 ```
 
 And here's how it looks like when you run the program.
-![PlayWithCPU](https://github.com/Jason017/Undefeatable-AI-Tic-Tac-Toe/blob/master/Preview/PlayWithCPU.png)
+<!-- ![PlayWithCPU](https://github.com/Jason017/Undefeatable-AI-Tic-Tac-Toe/blob/master/Preview/PlayWithCPU.png) -->
+<img src="https://github.com/Jason017/Undefeatable-AI-Tic-Tac-Toe/blob/master/Preview/PlayWithCPU.png" alt="drawing" height="500" width="370"/>
+
 
 - Using a dictionary to store the data of the gameboard and count the winning format.
 - Global variable `playerTurn` and `cpuTurn` to determine who's playing and who's winning the game eventually.
@@ -26,7 +28,7 @@ Comprehensively upgraded Tic Tac Toe AI in python that no one can beat. You will
 
 - [Minimax Algorithm](https://en.wikipedia.org/wiki/Minimax) introduced by the concept of [game tree](https://en.wikipedia.org/wiki/Game_tree)
 
-![minimax](https://github.com/Jason017/Undefeatable-AI-Tic-Tac-Toe/blob/master/Preview/minimax.png)
+<img src="https://github.com/Jason017/Undefeatable-AI-Tic-Tac-Toe/blob/master/Preview/minimax.png" alt="drawing" height="350" width="370"/>
 
 The implemented function:
 ```Python
